@@ -1,7 +1,7 @@
 from __future__ import annotations
 
 from typing import Callable, Dict, Any
-from EduOGE.services.generators import generate_task, GEN_VERSION
+from EduOGE.services.generators import generate_task
 
 GeneratorFn = Callable[[int], Any]
 
@@ -40,13 +40,6 @@ def build_task_payload(*, generator_key: str, seed: int) -> dict:
 
     meta = {
         "generator_key": generator_key,
-        "gen_version": getattr(task, "gen_version", GEN_VERSION),
-        "seed": str(seed),
-
-        # ключ семейства и параметры (самое важное для дебага/воспроизводимости)
-        "family_key": getattr(task, "family_key", ""),
-        "params": getattr(task, "params", {}),
-
         "tests": tests,
         "statement": statement,
         "example_inp": example_inp,
@@ -61,8 +54,6 @@ def build_task_payload(*, generator_key: str, seed: int) -> dict:
         "example_out": example_out,
         "solution_py": meta["solution_py"],
         "solution_js": meta["solution_js"],
-
-        # поле в БД есть, миграции не трогаем: храним вывод на примере
         "correct_answer": example_out,
         "meta": meta,
     }

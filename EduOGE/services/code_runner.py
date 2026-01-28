@@ -11,9 +11,8 @@ class RunnerError(Exception):
         self.message = message
 
 
-def _limit(s: str, limit: int = 20000) -> str:
-    """Limit output size but do NOT strip whitespace (it may be meaningful)."""
-    s = (s or "")
+def _trim(s: str, limit: int = 20000) -> str:
+    s = (s or "").strip()
     return s if len(s) <= limit else (s[:limit] + "\n...[trimmed]...")
 
 
@@ -46,8 +45,8 @@ def run_python(code: str, input_data: str, timeout_sec: int = 2) -> str:
         )
         if result.returncode != 0:
             kind = _classify_python(result.stderr)
-            raise RunnerError(kind, _limit(result.stderr))
-        return _limit(result.stdout)
+            raise RunnerError(kind, _trim(result.stderr))
+        return _trim(result.stdout)
     except subprocess.TimeoutExpired:
         raise RunnerError("timeout", "Timeout")
     finally:
@@ -72,8 +71,8 @@ def run_js(code: str, input_data: str, timeout_sec: int = 2) -> str:
         )
         if result.returncode != 0:
             kind = _classify_js(result.stderr)
-            raise RunnerError(kind, _limit(result.stderr))
-        return _limit(result.stdout)
+            raise RunnerError(kind, _trim(result.stderr))
+        return _trim(result.stdout)
     except subprocess.TimeoutExpired:
         raise RunnerError("timeout", "Timeout")
     finally:
