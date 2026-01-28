@@ -1,0 +1,36 @@
+{% extends "eduoge/base.html" %}
+{% load static %}
+
+{% block title %}EduOGE{% endblock %}
+
+{% block body %}
+<section class="hero">
+  <div class="container">
+    <h1 class="hero__title">EduOGE</h1>
+    <p class="hero__subtitle">Тренажёр ОГЭ: выбирай тип и решай варианты с генерацией.</p>
+  </div>
+</section>
+
+<section class="section">
+  <div class="container">
+    <h2 class="section__title">Доступные задания</h2>
+
+    <div class="cards">
+      {% for t in types %}
+      <article class="card">
+        <div class="card__icon">&lt;/&gt;</div>
+        <h3 class="card__title">{{ t.code }}. {{ t.title }}</h3>
+        <p class="card__desc">{{ t.description|default:"" }}</p>
+        <a class="btn btn--accent" href="{% url 'eduoge:exercise_page' %}?type={{ t.code }}">Начать</a>
+      </article>
+      {% empty %}
+      <p>Пока нет типов заданий. Добавь ExerciseType в админке.</p>
+      {% endfor %}
+    </div>
+  </div>
+</section>
+
+<footer class="footer">
+  <div class="container">© {% now "Y" %} EduOGE.</div>
+</footer>
+{% endblock %}

@@ -1,0 +1,87 @@
+{% extends "eduoge/base.html" %}
+{% load static %}
+
+{% block title %}EduOGE · Задание {{ etype.code }}{% endblock %}
+
+{% block head %}
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.16/codemirror.min.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.16/theme/eclipse.min.css">
+{% endblock %}
+
+{% block body %}
+<section class="hero hero--small">
+  <div class="container">
+    <h1 class="hero__title">Задание {{ etype.code }}: {{ etype.title }}</h1>
+    <p class="hero__subtitle">Решай, проверяй, повторяй. Люди так “учатся”.</p>
+  </div>
+</section>
+
+<section class="section">
+  <div class="container">
+    <div class="exercise">
+      <div class="exercise__panel">
+        <div class="exercise__meta">
+          <span id="seedBadge" class="badge"></span>
+        </div>
+
+        <div class="exercise__layout">
+          <!-- LEFT: code -->
+          <div class="codebox">
+            <div class="codebox__top">
+              <div class="codebox__title">Код</div>
+              <select id="langSelect" class="codebox__select" aria-label="Язык">
+                <option value="python">Python</option>
+                <option value="js">JavaScript</option>
+              </select>
+            </div>
+
+            <textarea
+              id="codeInput"
+              class="codebox__input"
+              placeholder="# Напиши решение тут"
+              spellcheck="false"
+            ></textarea>
+          </div>
+
+          <!-- RIGHT: task + buttons -->
+          <div class="taskbox">
+            <div id="taskText" class="task"></div>
+
+            <div class="taskbox__actions">
+              <div class="taskbox__actions-left">
+                <button id="checkBtn" class="btn btn--accent" type="button">Проверить</button>
+                <button id="solution" class="btn btn--ghost-dark" type="button">Решение</button>
+              </div>
+              <div class="taskbox__actions-right">
+                <button id="nextBtn" class="btn btn--ghost-dark" type="button">Следующая</button>
+              </div>
+            </div>
+
+            <div id="resultBox" class="result" hidden></div>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </div>
+</section>
+
+<footer class="footer">
+  <div class="container">© {% now "Y" %} EduOGE.</div>
+</footer>
+{% endblock %}
+
+{% block scripts %}
+<script>
+  window.EDUOGE = {
+    type: {{ etype.code|safe }},
+    apiExercise: "{% url 'eduoge:api_generate_exercise' %}",
+    apiCheck: "{% url 'eduoge:api_check_answer' %}",
+  };
+</script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.16/codemirror.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.16/mode/python/python.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.16/mode/javascript/javascript.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.16/addon/display/placeholder.min.js"></script>
+<script src="{% static 'eduoge/js/exercise.js' %}"></script>
+{% endblock %}

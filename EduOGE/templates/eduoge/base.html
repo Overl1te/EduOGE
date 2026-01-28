@@ -1,0 +1,32 @@
+{% load static %}
+<!doctype html>
+<html lang="ru">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <link rel="icon" href="{% static 'eduoge/favicon.ico' %}" type="image/x-icon">
+  <link rel="shortcut icon" href="{% static 'eduoge/favicon.ico' %}" type="image/x-icon">
+  <title>{% block title %}EduOGE{% endblock %}</title>
+
+  <link rel="stylesheet" href="{% static 'eduoge/css/main.css' %}">
+  {% block head %}{% endblock %}
+</head>
+<body>
+  <header class="topbar">
+    <div class="container topbar__inner">
+      <a class="brand" href="/">
+        <span class="brand__icon"><img src="{% static 'eduoge/favicon.ico' %}" alt="EduOGE"></span>
+        <span class="brand__name">EduOGE</span>
+      </a>
+
+      <div class="topbar__actions">
+        <a class="btn btn--ghost" href="#" aria-disabled="true">Войти</a>
+      </div>
+    </div>
+  </header>
+
+  {% block body %}{% endblock %}
+
+  {% block scripts %}{% endblock %}
+</body>
+</html>
